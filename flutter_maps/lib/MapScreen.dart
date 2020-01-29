@@ -16,7 +16,7 @@ class MapScreen extends StatefulWidget {
 class MapState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   static final CameraPosition fiapPosition = CameraPosition(
-      target: LatLng(-23.595157, -46.687052), zoom: 19.151926040649414);
+      target: LatLng(-23.595157, -46.687052));
 
   Set<Marker> citiesMarker = Set();
 

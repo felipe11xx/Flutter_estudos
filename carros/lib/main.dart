@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepPurple,
      visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: LoginPage()

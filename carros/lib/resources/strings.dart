@@ -9,5 +9,15 @@ class Strings{
   static String ok = "ok";
   static String cancel = "cancelar";
   static String loginError = "Não foi possível realizar o login";
+  static String fav = "Favoritos";
+  static String logout = "Logout";
+  static String moreInfo = "Mais Informações";
+  static String help = "Ajuda";
+  static String details = "DETALHES";
+  static String share = "SHARE";
+  static String carError = "Não foi Posivel buscar os carros";
+  static String classic = "Clássicos";
+  static String sport = "Esportivos";
+  static String lux = "Luxo";
 
 }

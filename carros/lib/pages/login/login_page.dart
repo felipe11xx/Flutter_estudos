@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:carros/Resources/strings.dart';
 import 'package:carros/domain/user.dart';
 import 'package:carros/network/api_response.dart';
-import 'package:carros/network/login_api.dart';
+import 'package:carros/pages/login/login_bloc.dart';
 import 'package:carros/utils/navigation.dart';
 import 'package:carros/widgets/app_alert.dart';
 import 'package:carros/widgets/app_button.dart';
@@ -9,7 +11,7 @@ import 'package:carros/widgets/app_inputtext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import '../home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -21,7 +23,23 @@ class _LoginPageState extends State<LoginPage> {
   final _tPassword = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _focusPassword = FocusNode();
-  bool _showProgress = false;
+
+
+  final LoginBloc bloc = LoginBloc();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future<User> future = User.get();
+
+    future.then((User user) {
+      if (user != null) {
+        _tLogin.text = user.nome;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +78,15 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton(
-              Strings.login,
-              onPressed: () => _onClickLogin(),
-              showProgress: _showProgress,
-            ),
+            StreamBuilder<bool>(
+                stream: bloc.buttonBloc.stream,
+                builder: (context, snapshot) {
+                  return AppButton(
+                    Strings.login,
+                    onPressed: () => _onClickLogin(),
+                    showProgress: snapshot.data ?? false,
+                  );
+                }),
           ],
         ),
       ),
@@ -76,22 +98,13 @@ class _LoginPageState extends State<LoginPage> {
     String login = _tLogin.text;
     String password = _tPassword.text;
 
-    setState(() {
-      _showProgress = true;
-    });
-    ApiResponse response = await LoginApi.login(login, password);
+    ApiResponse response = await bloc.login(login, password);
 
     if (response.ok) {
       User user = response.result;
       print("nome > $user");
-      push(context, HomePage());
-      setState(() {
-        _showProgress = false;
-      });
+      push(context, HomePage(), replace: true);
     } else {
-      setState(() {
-        _showProgress = false;
-      });
       alert(context, response.message);
     }
   }
@@ -101,5 +114,11 @@ class _LoginPageState extends State<LoginPage> {
       return Strings.insertAText;
     }
     return null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
   }
 }

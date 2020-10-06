@@ -18,6 +18,4 @@ class LoginBloc {
   void dispose(){
     buttonBloc.dispose();
   }
-
-
 }

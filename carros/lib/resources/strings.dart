@@ -14,10 +14,12 @@ class Strings{
   static String moreInfo = "Mais Informações";
   static String help = "Ajuda";
   static String details = "DETALHES";
-  static String share = "SHARE";
   static String carError = "Não foi Posivel buscar os carros";
   static String classic = "Clássicos";
   static String sport = "Esportivos";
   static String lux = "Luxo";
+  static const String edit = "Editar";
+  static const String delete = "Deletar";
+  static const String share ="Share";
 
 }

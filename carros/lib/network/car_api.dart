@@ -15,21 +15,23 @@ class CarApi {
 
     User user = await User.get();
 
-    Map<String, String> headers = {
+    Map<String,String> headers = {
       "Content-Type": "application/json",
       "Authorization": "Bearer ${user.token}"
     };
 
     var url = 'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/$type';
 
-      var response = await http.get(url, headers: headers);
+    print("GET > $url");
 
-      String json = response.body;
+    var response = await http.get(url, headers: headers);
 
-      List listResponse = convert.json.decode(json);
+    String json = response.body;
 
-      final cars = listResponse.map<Car>((map) => Car.fromJson(map)).toList();
+    List list = convert.json.decode(json);
+    print("${list.toString()}");
+    List<Car> cars = list.map<Car>((map) => Car.fromJson(map)).cast<Car>().toList();
 
-      return cars;
+    return cars;
   }
 }

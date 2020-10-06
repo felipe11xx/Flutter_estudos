@@ -7,58 +7,13 @@ import 'package:flutter/material.dart';
 
 import 'car_bloc.dart';
 
-class CarsListView extends StatefulWidget {
-  String type;
-
-  CarsListView(this.type);
-
-  @override
-  _CarsListViewState createState() => _CarsListViewState();
-}
-
-class _CarsListViewState extends State<CarsListView>
-    with AutomaticKeepAliveClientMixin<CarsListView> {
+class CarsListView extends StatelessWidget {
   List<Car> cars;
 
-  CarBloc bloc = CarBloc();
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    bloc.fetch(widget.type);
-  }
-
+  CarsListView(this.cars);
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
-    print("CarrosListView build ${widget.type}");
-
-    return StreamBuilder(
-      stream: bloc.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return TextError(Strings.carError);
-        }
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        List<Car> cars = snapshot.data;
-
-        return _listView(cars);
-      },
-    );
-  }
-
-  _listView(List<Car> cars) {
     return Container(
       padding: EdgeInsets.all(16),
       child: ListView.builder(
@@ -104,7 +59,7 @@ class _CarsListViewState extends State<CarsListView>
                   FlatButton(
                     child: Text(Strings.details),
                     onPressed: () {
-                      _onClickCar(c);
+                      _onClickCar(context, c);
                     },
                   ),
                   FlatButton(
@@ -122,13 +77,7 @@ class _CarsListViewState extends State<CarsListView>
     );
   }
 
-  void _onClickCar(Car c) {
+  void _onClickCar(context, Car c) {
     push(context, CarPage(c));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    bloc.dispose();
   }
 }
